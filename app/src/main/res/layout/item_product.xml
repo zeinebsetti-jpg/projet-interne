@@ -8,16 +8,12 @@
     android:padding="10dp"
     android:gravity="center_vertical">
 
-
-    <!-- Photo du produit -->
     <ImageView
         android:id="@+id/imageProduct"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/telephone" />
+        android:scaleType="centerCrop"/>
 
-    <!-- Partie droite -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -26,25 +22,22 @@
         android:gravity="center_vertical"
         android:paddingStart="15dp">
 
-        <!-- Nom -->
         <TextView
             android:id="@+id/textProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Téléphone"
-            android:textColor="#a9c4b2"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#2F4F3A"
+            android:fontFamily="sans-serif-medium"/>
 
-        <!-- Bouton Acheter -->
         <Button
             android:id="@+id/btnBuy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Acheter"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:backgroundTint="#F9A825"/>
+            android:backgroundTint="#D96C4F"/>
 
     </LinearLayout>
 

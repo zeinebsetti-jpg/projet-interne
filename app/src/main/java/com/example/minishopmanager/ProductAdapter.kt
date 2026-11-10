@@ -12,9 +12,13 @@ import android.widget.Toast
 
 class ProductAdapter(
     private val context: Context,
-    private val products: Array<String>,
-    private val images: Array<Int>
-) : ArrayAdapter<String>(context, R.layout.item_product, products) {
+    private val products: ArrayList<Product>,
+    private val onBuy: (Product) -> Unit
+) : ArrayAdapter<Product>(
+    context,
+    R.layout.item_product,
+    products
+) {
 
     override fun getView(
         position: Int,
@@ -25,30 +29,43 @@ class ProductAdapter(
         val view = convertView ?: LayoutInflater.from(context)
             .inflate(R.layout.item_product, parent, false)
 
-        val imageProduct = view.findViewById<ImageView>(
-            R.id.imageProduct
+        val imageProduct =
+            view.findViewById<ImageView>(R.id.imageProduct)
+
+        val textProduct =
+            view.findViewById<TextView>(R.id.textProduct)
+
+        val btnBuy =
+            view.findViewById<Button>(R.id.btnBuy)
+
+        val product = products[position]
+
+        // Afficher le nom
+        textProduct.text = product.nom
+
+        // Récupérer automatiquement l'image depuis drawable
+        val imageId = context.resources.getIdentifier(
+            product.image,
+            "drawable",
+            context.packageName
         )
 
-        val textProduct = view.findViewById<TextView>(
-            R.id.textProduct
-        )
+        if (imageId != 0) {
+            imageProduct.setImageResource(imageId)
+        } else {
+            imageProduct.setImageResource(
+                android.R.drawable.ic_menu_gallery
+            )
+        }
 
-        val btnBuy = view.findViewById<Button>(
-            R.id.btnBuy
-        )
-
-        // Nom du produit
-        textProduct.text = products[position]
-
-        // Photo du produit
-        imageProduct.setImageResource(images[position])
-
-        // Bouton Acheter
+        // Action du bouton Acheter
         btnBuy.setOnClickListener {
+
+            onBuy(product)
 
             Toast.makeText(
                 context,
-                "${products[position]} ajouté au panier !",
+                "${product.nom} ajouté au panier !",
                 Toast.LENGTH_SHORT
             ).show()
         }

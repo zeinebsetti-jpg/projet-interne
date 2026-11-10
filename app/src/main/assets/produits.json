@@ -1,0 +1,28 @@
+{
+  "produits": [
+    {
+      "nom": "Téléphone",
+      "image": "telephone"
+    },
+    {
+      "nom": "Casque Bluetooth",
+      "image": "casque"
+    },
+    {
+      "nom": "Montre connectée",
+      "image": "montre"
+    },
+    {
+      "nom": "Chargeur USB",
+      "image": "chargeur"
+    },
+    {
+      "nom": "Collier",
+      "image": "colier"
+    },
+    {
+      "nom": "Bracelet",
+      "image": "bracelet"
+    }
+  ]
+}

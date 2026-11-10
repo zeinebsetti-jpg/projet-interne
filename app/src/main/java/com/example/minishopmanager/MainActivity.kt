@@ -1,95 +1,66 @@
 package com.example.minishopmanager
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // ==============================
-        // PARTIE 1 : Bouton Next
-        // ==============================
+        val etUserName = findViewById<EditText>(R.id.etUserName)
+        val cbRemember = findViewById<CheckBox>(R.id.cbRemember)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
 
-        val btnNext = findViewById<Button>(R.id.btnNext)
+        // Accéder aux préférences
+        prefs = getSharedPreferences("MiniShopPrefs", MODE_PRIVATE)
 
-        btnNext.setOnClickListener {
+        // Récupérer les informations sauvegardées
+        etUserName.setText(prefs.getString("USERNAME", ""))
+        cbRemember.isChecked = prefs.getBoolean("REMEMBER", false)
 
-            // Afficher le Toast
+        btnLogin.setOnClickListener {
+
+            val username = etUserName.text.toString().trim()
+
+            if (username.isEmpty()) {
+                Toast.makeText(
+                    this,
+                    "Veuillez saisir votre nom",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            val editor = prefs.edit()
+
+            if (cbRemember.isChecked) {
+                editor.putString("USERNAME", username)
+                editor.putBoolean("REMEMBER", true)
+            } else {
+                editor.clear()
+            }
+
+            editor.apply()
+
             Toast.makeText(
                 this,
-                "Bonjour zeineb setti !",
+                "Bienvenue $username",
                 Toast.LENGTH_SHORT
             ).show()
 
-            // Ouvrir ProfileActivity
-            val intent = Intent(
-                this,
-                ProfileActivity::class.java
-            )
-
+            // Ouvrir le catalogue
+            val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
-
-
-        // ==============================
-        // PARTIE 2 : Liste des produits
-        // ==============================
-
-        // Récupérer le ListView
-        val listView = findViewById<ListView>(
-            R.id.listViewProducts
-        )
-
-        // Charger les produits depuis strings.xml
-        val products = resources.getStringArray(
-            R.array.products
-        )
-
-        // Créer l'ArrayAdapter
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            products
-        )
-
-        // Afficher les produits dans le ListView
-        listView.adapter = adapter
-
-
-        // ==============================
-        // PARTIE 3 : Clic sur un produit
-        // ==============================
-
-        listView.setOnItemClickListener { parent, _, position, _ ->
-
-            val product = parent
-                .getItemAtPosition(position)
-                .toString()
-
-            Toast.makeText(
-                this,
-                "Produit sélectionné : $product",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-
-        // ==============================
-        // PARTIE 4 : Cycle de vie
-        // ==============================
-
-        Log.d(
-            "LIFECYCLE",
-            "onCreate appelé"
-        )
     }
 }
